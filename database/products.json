@@ -1,0 +1,39 @@
+[
+  {
+    "nama": "netflix",
+    "alias": [
+      "netflix",
+      "nf",
+      "net"
+    ],
+    "snk": "no sharing dan deactive no refund",
+    "varian": [
+      {
+        "nama": "7hari",
+        "harga": 10000,
+        "deskripsi": "Netflix 7 hari full garansi"
+      },
+      {
+        "nama": "1bulan",
+        "harga": 30000,
+        "deskripsi": "Netflix 1 bulan premium",
+        "stok": 10
+      }
+    ]
+  },
+  {
+    "nama": "viu",
+    "alias": [
+      "viu"
+    ],
+    "snk": "-",
+    "varian": [
+      {
+        "nama": "1bulan",
+        "harga": 3000,
+        "deskripsi": "-",
+        "stok": 3
+      }
+    ]
+  }
+]

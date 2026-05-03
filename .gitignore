@@ -1,0 +1,4 @@
+node_modules/
+session/
+database/orders.json
+database/payment.json
