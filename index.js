@@ -18,21 +18,22 @@ async function startBot() {
     logger: pino({ level: "silent" }),
     auth: state,
 
-    // 🔥 FIX WAJIB (BIAR QR GAK NGACO)
+    // 🔥 BIKIN DEVICE TRUSTED
     browser: ["Windows", "Chrome", "120.0.0"],
+
+    // 🔥 STABILITAS
     connectTimeoutMs: 60000,
-    keepAliveIntervalMs: 10000,
-    markOnlineOnConnect: false,
+    keepAliveIntervalMs: 15000,
+    markOnlineOnConnect: true,
     syncFullHistory: false
   })
 
-  // save session
   sock.ev.on("creds.update", saveCreds)
 
   // =====================
-  // CONNECTION HANDLER (FIX UTAMA)
+  // CONNECTION
   // =====================
-  sock.ev.on("connection.update", (update) => {
+  sock.ev.on("connection.update", async (update) => {
     const { connection, qr, lastDisconnect } = update
 
     if (qr) {
@@ -42,6 +43,14 @@ async function startBot() {
 
     if (connection === "open") {
       console.log("✅ Bot connect")
+
+      // 🔥 FORCE ONLINE (BIAR MUNCUL AKTIF)
+      await sock.sendPresenceUpdate("available")
+
+      // 🔥 KEEP ONLINE (anti idle disconnect)
+      setInterval(() => {
+        sock.sendPresenceUpdate("available")
+      }, 20000)
     }
 
     if (connection === "close") {
@@ -51,9 +60,9 @@ async function startBot() {
 
       if (reason !== DisconnectReason.loggedOut) {
         console.log("🔄 Reconnecting...")
-        setTimeout(startBot, 3000)
+        setTimeout(startBot, 5000) // 🔥 jangan terlalu cepat
       } else {
-        console.log("⚠️ Session logout, hapus session dan scan ulang")
+        console.log("⚠️ Session logout, hapus session")
       }
     }
   })
@@ -143,7 +152,6 @@ setInterval(() => {
 
     const now = Date.now()
 
-    // hapus order lebih dari 2 hari
     orders = orders.filter(
       (o) => now - o.createdAt < 2 * 24 * 60 * 60 * 1000
     )
